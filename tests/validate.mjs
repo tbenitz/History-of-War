@@ -1,0 +1,14 @@
+import {readFileSync,existsSync} from 'node:fs';
+const read=name=>JSON.parse(readFileSync(new URL('../'+name,import.meta.url),'utf8'));
+const book=read('book.json'),catalog=read('voices.json');
+const assert=(cond,what)=>{if(!cond)throw new Error(what)};
+assert(book.chapters.length===60,'Expected exactly 60 manuscript parts');
+assert(book.chapters.every((c,i)=>c.id===i+1&&c.paragraphs.length>0),'Parts out of sequence or empty');
+assert(book.chapters.reduce((acc,c)=>acc+c.words,0)>300000,'Manuscript appears truncated');
+assert(catalog.voices.length===102,'Catalog incomplete: expected 102 voices');
+assert(new Set(catalog.voices.map(v=>v.id)).size===102,'Voice IDs are not unique');
+assert(catalog.voices.filter(v=>v.lang==='en').length===37,'English voice catalog incomplete');
+assert(catalog.voices.filter(v=>v.gender==='character').length===12,'Character voices missing');
+assert(catalog.voices.every(v=>v.file==='voices/'+v.id+'.safetensors'),'Invalid voice URL');
+for(const name of ['index.html','app.js','styles.css','original-manuscript.txt'])assert(existsSync(new URL('../'+name,import.meta.url)),'Missing '+name);
+console.log(`PASS: ${book.chapters.length} parts, ${book.chapters.reduce((s,c)=>s+c.words,0).toLocaleString()} source words, ${catalog.voices.length} official voices (37 English, 65 other languages).`);

@@ -1,0 +1,17 @@
+{
+  "name": "history-war-weapons-listener",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Illustrated manuscript listener using on-device Phonon TTS",
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node --check app.js && node tests/validate.mjs"
+  },
+  "dependencies": {
+    "phonon-tts": "^0.7.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
