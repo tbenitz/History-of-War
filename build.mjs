@@ -12,7 +12,7 @@ fs.copyFileSync(path.join(root,'_headers'),path.join(dist,'_headers'));
 fs.mkdirSync(path.join(dist,'vendor'),{recursive:true});
 // Keep worker and Wasm files together with index.js: their relative URLs must resolve locally.
 const runtimeDir=path.join(dist,'vendor/phonon');
-fs.cpSync(path.join(root,'node_modules/phonon-tts'),runtimeDir,{recursive:true,filter:(s)=>!/(?:\\/\\.git\\/|\\/node_modules\\/)/.test(s)});
+fs.cpSync(path.join(root,'node_modules/phonon-tts'),runtimeDir,{recursive:true});
 const required=['index.js','worker.js'];
 for(const name of required){
   if(!fs.existsSync(path.join(runtimeDir,name)))throw new Error('Phonon browser runtime is incomplete: vendor/phonon/'+name+' missing from dist');
